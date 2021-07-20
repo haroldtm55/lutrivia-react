@@ -4,53 +4,48 @@ import questionsList from './data'
 
 export default class QuestionsContainer extends React.Component {
   state = {
-    score: null,
+    finalScore: 0,
     answersArray: new Array(questionsList.length).fill(undefined)
-    // buttonState: {
-    //   backgroundColorTrueButton: '',
-    //   backgroundColorFalseButton: '',
-    //   disableTrueButton: false,
-    //   disableFalseButton: false
-    // }
   }
 
-  handleClickTrueButton = (e, answer, questionIndex) => {
+  initialState = {
+    finalScore: 0,
+    answersArray: new Array(questionsList.length).fill(undefined)
+  }
+
+  handleClickTrueButton = (answer, questionIndex) => {
     if (answer) {
       const newAnswersArray = [...this.state.answersArray]
       newAnswersArray[questionIndex] = true
+      let score = this.state.finalScore + 1
       this.setState({
-       answersArray: newAnswersArray
+       answersArray: newAnswersArray,
+       finalScore: score
       })
-      // e.target.style.backgroundColor = 'green'
     } else {
       const newAnswersArray = [...this.state.answersArray]
       newAnswersArray[questionIndex] = false
       this.setState({
         answersArray: newAnswersArray
        })
-      // e.target.style.backgroundColor = 'red'
     }
   }
 
-  handleClickFalseButton = (e, answer) => {
+  handleClickFalseButton = (answer, questionIndex) => {
     if (!answer) {
-      // this.setState({
-      //   buttonState: {
-      //     ...this.state.buttonState,
-      //     backgroundColorFalseButton:'green',
-      //     disableTrueButton: true
-      //   }
-      // })
-      e.target.style.backgroundColor = 'green'
+      const newAnswersArray = [...this.state.answersArray]
+      newAnswersArray[questionIndex] = true
+      let score = this.state.finalScore + 1
+      this.setState({
+       answersArray: newAnswersArray,
+       finalScore: score
+      })
     } else {
-      // this.setState({
-      //   buttonState: {
-      //     ...this.state.buttonState,
-      //     backgroundColorFalseButton:'red',
-      //     disableTrueButton: true
-      //   }
-      // })
-      e.target.style.backgroundColor = 'red' 
+      const newAnswersArray = [...this.state.answersArray]
+      newAnswersArray[questionIndex] = false
+      this.setState({
+        answersArray: newAnswersArray
+       })
     }
   }
   
@@ -71,8 +66,8 @@ export default class QuestionsContainer extends React.Component {
   render() {
     return (
       <div>
-        <button>New Game</button>
-        <span>Score: {this.state.score }</span>
+        <button onClick={()=>this.setState(this.initialState)}>New Game</button>
+        <span>Score: {this.state.finalScore }</span>
         {this.renderQuestionCards()}
       </div>
     )
